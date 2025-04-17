@@ -19,7 +19,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\YourProjectFolder\bin\$(buildConfiguration)'  # Replace with your project path
+    SourceFolder: '$(Build.SourcesDirectory)\WebApplication5\bin\$(buildConfiguration)'  # Replace with your project path
     Contents: '**'
     TargetFolder: '$(outputDir)'
 
