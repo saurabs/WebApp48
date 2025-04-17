@@ -9,15 +9,6 @@ variables:
   solution: '**/*.sln'
 
 steps:
-- task: UseNuGet@5
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: NuGetCommand@2
-  inputs:
-    command: 'restore'
-    restoreSolution: '$(solution)'
-
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
