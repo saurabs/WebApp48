@@ -1,5 +1,5 @@
 trigger:
-- main  # change to your branch name
+- main
 
 pool:
   name: private
@@ -7,24 +7,18 @@ pool:
 variables:
   buildConfiguration: 'Release'
   solution: '**/*.sln'
-  outputDir: '$(Build.ArtifactStagingDirectory)\App'
+  publishDir: '$(Build.ArtifactStagingDirectory)\_PublishedWebApp'
 
 steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:Configuration=$(buildConfiguration)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:PublishProfile="" /p:WebPublishMethod=FileSystem /p:PublishDir=$(publishDir)\ /p:Configuration=$(buildConfiguration)'
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\WebApplication5\bin\$(buildConfiguration)'  # Replace with your project path
-    Contents: '**'
-    TargetFolder: '$(outputDir)'
-
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(outputDir)'
+    PathtoPublish: '$(publishDir)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
