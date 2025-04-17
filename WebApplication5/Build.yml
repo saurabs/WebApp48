@@ -7,6 +7,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   solution: '**/*.sln'
+  outputDir: '$(Build.ArtifactStagingDirectory)\App'
 
 steps:
 - task: VSBuild@1
@@ -16,8 +17,14 @@ steps:
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\YourProjectFolder\bin\$(buildConfiguration)'  # Replace with your project path
+    Contents: '**'
+    TargetFolder: '$(outputDir)'
+
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(outputDir)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
