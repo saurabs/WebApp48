@@ -50,10 +50,12 @@ steps:
 #     platform: 'Any CPU'
 #     configuration: 'Release'
 
-# 🛠️ Use robocopy to copy with timestamps preserved
-# - script: |
-#     robocopy "$(Build.SourcesDirectory)\$(projectFolder)" "$(publishDir)" /E /COPY:DAT /DCOPY:T /NFL /NDL /NJH /NJS
-#   displayName: 'Copy files with timestamps using robocopy (safe mode)'
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/$(projectFolder)/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/WebApp'
+
 
 # 📦 Publish artifact
 - task: PublishBuildArtifacts@1
