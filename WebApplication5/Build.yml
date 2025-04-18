@@ -33,15 +33,28 @@ variables:
   buildConfiguration: 'Release'
   solution: '**/*.sln'
   projectFolder: 'WebApplication5'  # 🔁 Change this to your project folder name
-  publishDir: '$(Build.ArtifactStagingDirectory)\WebApp'
+#  publishDir: '$(Build.ArtifactStagingDirectory)\WebApp'
 
 steps:
 - task: VSBuild@1
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:Configuration=$(buildConfiguration)'
+    solution: '**/*.sln'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PublishDir=$(Build.ArtifactStagingDirectory)'
     platform: 'Any CPU'
-    configuration: '$(buildConfiguration)'
+    configuration: 'Release'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+# - task: VSBuild@1
+#   inputs:
+#     solution: '$(solution)'
+#     msbuildArgs: '/p:Configuration=$(buildConfiguration)'
+#     platform: 'Any CPU'
+#     configuration: '$(buildConfiguration)'
 
 # - task: MSBuild@1
 #   inputs:
@@ -50,16 +63,16 @@ steps:
 #     platform: 'Any CPU'
 #     configuration: 'Release'
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/$(projectFolder)/bin/$(buildConfiguration)'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/WebApp'
+# - task: CopyFiles@2
+#   inputs:
+#     SourceFolder: '$(Build.SourcesDirectory)/$(projectFolder)/bin/'
+#     Contents: '**'
+#     TargetFolder: '$(Build.ArtifactStagingDirectory)/WebApp'
 
 
-# 📦 Publish artifact
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(publishDir)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+# # 📦 Publish artifact
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(publishDir)'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'
