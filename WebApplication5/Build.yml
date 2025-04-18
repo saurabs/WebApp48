@@ -36,19 +36,19 @@ variables:
   publishDir: '$(Build.ArtifactStagingDirectory)\WebApp'
 
 steps:
-# - task: VSBuild@1
-#   inputs:
-#     solution: '$(solution)'
-#     msbuildArgs: '/p:Configuration=$(buildConfiguration)'
-#     platform: 'Any CPU'
-#     configuration: '$(buildConfiguration)'
-
-- task: MSBuild@1
+- task: VSBuild@1
   inputs:
-    solution: '**/*.sln'
-    msbuildArguments: '/p:Configuration=Release /m'
+    solution: '$(solution)'
+    msbuildArgs: '/p:Configuration=$(buildConfiguration)'
     platform: 'Any CPU'
-    configuration: 'Release'
+    configuration: '$(buildConfiguration)'
+
+# - task: MSBuild@1
+#   inputs:
+#     solution: '**/*.sln'
+#     msbuildArguments: '/p:Configuration=Release /m'
+#     platform: 'Any CPU'
+#     configuration: 'Release'
 
 # 🛠️ Use robocopy to copy with timestamps preserved
 - script: |
